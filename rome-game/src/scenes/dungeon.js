@@ -10,19 +10,14 @@ import {
 import { generatePlayerComponents, setPlayerMovement } from "../entities/player.js";
 
 import { gameState, playerState } from "../state/stateManager.js";
-import { generateGhostComponents, onGhostDestroyed, setGhostAI } from "../entities/ghost.js";
+import { generateGhostComponents, onGhostDestroyed, setGhostAI } from "../entities/boss.js";
 import { healthBar } from "../uiComponents/healthBar.js";
 
-export default async function dungeon(k) {
+export default async function dungeon(k, entities) {
   colorizeBackground(k, 27, 29, 52);
   const mapData = await fetchMapData("./assets/maps/dungeon.json");
 
   const map = k.add([k.pos(420, 111)]);
-
-  const entities = {
-    player: null,
-    ghost: null,
-  };
 
   const layers = mapData.layers;
   for (const layer of layers) {

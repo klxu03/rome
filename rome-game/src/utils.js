@@ -1,5 +1,6 @@
 import { playerState } from "./state/stateManager.js";
 import { healthBar } from "./uiComponents/healthBar.js";
+import { gameState } from "./state/stateManager.js";
 
 export function playAnimIfNotPlaying(gameObj, animName) {
     if (gameObj.curAnim() !== animName) gameObj.play(animName);
@@ -72,7 +73,21 @@ export async function blinkEffect(k, entity) {
 
 // entity is an enemy entity
 export function onAttacked(k, entity, player) {
+    /*
     entity.onCollide("swordHitBox", async () => {
+        if (entity.isAttacking) return;
+
+        await blinkEffect(k, entity);
+        entity.hurt(player.attackPower);
+
+        if (entity.hp() <= 0) {
+            k.destroy(entity);
+            return;
+        }
+    });
+    */
+
+    entity.onCollide("projectile", async () => {
         if (entity.isAttacking) return;
 
         await blinkEffect(k, entity);
@@ -95,11 +110,12 @@ export function onCollideWithPlayer(k, entity) {
         await blinkEffect(k, player);
 
         if (playerState.getHealth() <= 0) {
+            gameState.setPreviousScene("house");
+            k.go("world");
+
+            gameState.setHasRespawned(true);
             playerState.setHealth(playerState.getMaxHealth());
             playerState.setIsSwordEquipped(false);
-            
-            // could send to a new menu page
-            k.go("world");
         }
     });
 }

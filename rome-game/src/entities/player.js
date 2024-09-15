@@ -1,12 +1,13 @@
 import { gameState } from "../state/stateManager.js";
 import { playAnimIfNotPlaying, areAnyKeysDown, areAllKeysDown } from "../utils.js";
 import { playerState } from "../state/stateManager.js";
+import { generateProjectileComponents, startProjectile } from "./projectile.js";
 
 // pos is the Vec2
 export function generatePlayerComponents(k, pos) {
   return [
     k.sprite("assets", {
-      anim: "player-idle-down",
+      anim: gameState.getHasRespawned() ? "tombstone" : "player-idle-down",
     }),
     k.area({ shape: new k.Rect(k.vec2(3, 4), 10, 12) }), // relative offset 3 pixels from sprite left and 4 down, width 10 and height 12
     k.body(),
@@ -17,12 +18,13 @@ export function generatePlayerComponents(k, pos) {
         attackPower: 1,
         direction: "down",
         isAttacking: false,
+        lastProjectileTimestamp: -2,
     },
     "player"
   ];
 }
 
-export function setPlayerMovement(k, player) {
+export function setPlayerMovement(k, player, entityProjectile, map) {
   const horizontalKeys = ["left", "a", "right", "d"];
   const verticalKeys = ["up", "w", "down", "s"];
 
@@ -88,14 +90,19 @@ export function setPlayerMovement(k, player) {
 
     // Create a sword hit box in front of player
     if (k.get("swordHitBox").length === 0) {
-      const swordHitBoxPosX = {
+
+    }
+
+    // Create a projectile if you haven't shot in the last second
+    if (k.time() >= player.lastProjectileTimestamp + 2) {
+      const throwingPosX = {
         left: player.worldPos().x - 2,
         right: player.worldPos().x + 10,
         up: player.worldPos().x + 5,
         down: player.worldPos().x + 2,
       };
 
-      const swordHitBoxPosY = {
+      const throwingPosY = {
         left: player.worldPos().y + 5,
         right: player.worldPos().y + 5,
         up: player.worldPos().y,
@@ -103,17 +110,16 @@ export function setPlayerMovement(k, player) {
       };
 
       k.add([
-        k.area({shape: new k.Rect(k.vec2(0), 8, 8)}),
         k.pos(
-          swordHitBoxPosX[player.direction],
-          swordHitBoxPosY[player.direction]
+          throwingPosX[player.direction],
+          throwingPosY[player.direction]
         ),
-        "swordHitBox"
+        "throwingHand"
       ]);
 
-      const waitBeforeDestroyingSwordHitBox = 0.1;
-      k.wait(waitBeforeDestroyingSwordHitBox, () => {
-        k.destroyAll("swordHitBox");
+      const throwingAnimationDuration = 0.1;
+      k.wait(throwingAnimationDuration, () => {
+        k.destroyAll("throwingHand");
 
         if (player.direction === "left" || player.direction === "right") {
           playAnimIfNotPlaying(player, "player-side");
@@ -125,6 +131,12 @@ export function setPlayerMovement(k, player) {
       });
 
       playAnimIfNotPlaying(player, `player-attack-${player.direction}`);
+
+      entityProjectile = map.add(
+        generateProjectileComponents(k, player.worldPos(), player.direction)
+      );
+      startProjectile(k, entityProjectile);
+      player.lastProjectileTimestamp = k.time();
     }
   });
 

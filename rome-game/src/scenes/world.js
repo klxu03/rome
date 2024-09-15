@@ -1,20 +1,15 @@
 import { generatePlayerComponents, setPlayerMovement } from "../entities/player.js";
-import { generateSlimeComponents, setSlimeAI } from "../entities/slime.js";
+import { generateSlimeComponents, setSlimeAI } from "../entities/minion.js";
 import { gameState } from "../state/stateManager.js";
 import { healthBar } from "../uiComponents/healthBar.js";
 import { colorizeBackground, drawBoundaries, drawTiles, fetchMapData, onAttacked, onCollideWithPlayer } from "../utils.js";
 
-export default async function world(k) {
+export default async function world(k, entities) {
     const previousScene = gameState.getPreviousScene();
     colorizeBackground(k, 76, 170, 255);
     const mapData = await fetchMapData("./assets/maps/world.json");
 
     const map = k.add([k.pos(0, 0)]);
-
-    const entities = {
-        player: null,
-        slimes: [],
-    };
 
     const layers = mapData.layers;
     for (const layer of layers) {
@@ -61,7 +56,7 @@ export default async function world(k) {
         }
     });
 
-    setPlayerMovement(k, entities.player);
+    setPlayerMovement(k, entities.player, entities.projectile, map);
 
     for (const slime of entities.slimes) {
         setSlimeAI(k, slime);

@@ -5,16 +5,11 @@ import { playerState } from "../state/stateManager.js";
 import { healthBar } from "../uiComponents/healthBar.js";
 import { gameState } from "../state/stateManager.js";
 
-export default async function house(k) {
+export default async function house(k, entities) {
     colorizeBackground(k, 27, 29, 52);
     const mapData = await fetchMapData("./assets/maps/house.json");
 
     const map = k.add([k.pos(520, 200)]);
-
-    const entities = {
-        player: null,
-        oldMan: null
-    }
 
     const layers = mapData.layers;
     for (const layer of layers) {

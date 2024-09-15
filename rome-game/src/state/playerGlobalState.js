@@ -3,7 +3,7 @@ export default function playerGlobalStateManager() {
   
     function createInstance() {
       let isSwordEquipped = false;
-      const maxHealth = 2;
+      const maxHealth = 3;
       let health = maxHealth;
       let hasKey = false;
   

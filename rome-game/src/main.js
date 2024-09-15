@@ -3,6 +3,33 @@ import world from "./scenes/world.js";
 import house from "./scenes/house.js";
 import dungeon from "./scenes/dungeon.js";
 
+k.loadSprite("minion", "./assets/minion.png", {
+  sliceX: 1,
+  sliceY: 1,
+  anims: {
+    "minion-idle": 0,
+    "minion-side": 0,
+    "minion-up": 0,
+    "minion-down": 0,
+  }
+});
+
+k.loadSprite("boss", "./assets/boss.png", {
+  sliceX: 1,
+  sliceY: 1,
+  anims: {
+    "boss-down": 0
+  }
+});
+
+k.loadSprite("projectile", "./assets/projectile.png", {
+  sliceX: 1,
+  sliceY: 1,
+  anims: {
+    "projectile-air": 0
+  }
+});
+
 k.loadSprite("assets", "./assets/topdownasset.png", {
   sliceX: 39, // there are 39 columns in the sprite sheet
   sliceY: 31, // there are 31 rows in the sprite sheet
@@ -25,12 +52,12 @@ k.loadSprite("assets", "./assets/topdownasset.png", {
       to: 1017,
       loop: true,
     },
-    "slime-idle-down": 858,
-    "slime-down": { from: 858, to: 859, loop: true },
-    "slime-idle-side": 860,
-    "slime-side": { from: 860, to: 861, loop: true },
-    "slime-idle-up": 897,
-    "slime-up": { from: 897, to: 898, loop: true },
+    // "slime-idle-down": 858,
+    // "slime-down": { from: 858, to: 859, loop: true },
+    // "slime-idle-side": 860,
+    // "slime-side": { from: 860, to: 861, loop: true },
+    // "slime-idle-up": 897,
+    // "slime-up": { from: 897, to: 898, loop: true },
     "oldman-down": 866,
     "oldman-side": 907,
     "oldman-up": 905,
@@ -38,7 +65,8 @@ k.loadSprite("assets", "./assets/topdownasset.png", {
     "player-attack-down": 1092,
     "player-attack-left": 1093,
     "player-attack-right": 1093,
-    "ghost-down": { from: 862, to: 863, loop: true },
+    // "ghost-down": { from: 862, to: 863, loop: true },
+    "tombstone": 393,
   },
 });
 k.loadSpriteAtlas("./assets/topdownasset.png", {
@@ -68,8 +96,16 @@ const scenes = {
   dungeon
 };
 
+const entities = {
+  player: null,
+  slimes: [],
+  ghost: null,
+  oldMan: null,
+  projectile: []
+};
+
 for (const sceneName in scenes) {
-  k.scene(sceneName, () => scenes[sceneName](k));
+  k.scene(sceneName, () => scenes[sceneName](k, entities));
 }
 
 k.go("world");

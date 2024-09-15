@@ -8,6 +8,7 @@ export default function globalStateManager() {
       let fontSize = 30;
       let isGhostDefeated = false;
       let isSonSaved = false;
+      let hasRespawned = false;
   
       return {
         setPreviousScene(sceneName) {
@@ -34,6 +35,10 @@ export default function globalStateManager() {
           isSonSaved = value;
         },
         getIsSonSaved: () => isSonSaved,
+        setHasRespawned: () => {
+          hasRespawned = true;
+        },
+        getHasRespawned: () => hasRespawned,
       };
     }
   

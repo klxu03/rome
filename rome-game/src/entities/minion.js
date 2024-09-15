@@ -4,8 +4,8 @@ const directionStates = ["left", "right", "up", "down"];
 
 export function generateSlimeComponents(k, pos) {
     return [
-      k.sprite("assets", {
-        anim: "slime-idle-down",
+      k.sprite("minion", {
+        anim: "minion-idle",
       }),
       k.area({ shape: new k.Rect(k.vec2(0, 6), 16, 10) }),
       k.body(),
@@ -55,7 +55,7 @@ export function generateSlimeComponents(k, pos) {
 
     const right = slime.onStateEnter("right", async () => {
       slime.flipX = false;
-      playAnimIfNotPlaying(slime, "slime-side");
+      playAnimIfNotPlaying(slime, "minion-side");
       await k.wait(3);
 
       slime.enterState("idle");
@@ -63,21 +63,21 @@ export function generateSlimeComponents(k, pos) {
 
     const left = slime.onStateEnter("left", async () => {
       slime.flipX = true;
-      playAnimIfNotPlaying(slime, "slime-side");
+      playAnimIfNotPlaying(slime, "minion-side");
       await k.wait(3);
 
       slime.enterState("idle");
     });
 
     const up = slime.onStateEnter("up", async () => {
-      playAnimIfNotPlaying(slime, "slime-up");
+      playAnimIfNotPlaying(slime, "minion-up");
       await k.wait(3);
 
       slime.enterState("idle");
     });
 
     const down = slime.onStateEnter("down", async () => {
-      playAnimIfNotPlaying(slime, "slime-down");
+      playAnimIfNotPlaying(slime, "minion-down");
       await k.wait(3);
 
       slime.enterState("idle");
