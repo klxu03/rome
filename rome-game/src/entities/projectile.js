@@ -68,12 +68,6 @@ export async function startProjectile(k, projectile) {
     setTimeout(() => {
         projectile.onCollide((ignored) => {
             console.log({projectile, ignored});
-            // if (projectile) {
-            //     k.destroy(projectile);
-            //     projectile = null;
-            //     return;
-            // }
-
             if (projectile.exists()) {
                 k.destroy(projectile);
               }

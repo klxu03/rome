@@ -92,8 +92,9 @@ export function setPlayerMovement(k, player, entityProjectile, map) {
 
     player.isAttacking = true;
 
+    const additionalTimeSinceLastProjectile = 1;
     // Create a projectile if you haven't shot in the last second
-    if (k.time() >= player.lastProjectileTimestamp + 2) {
+    if (k.time() >= player.lastProjectileTimestamp + additionalTimeSinceLastProjectile) {
       console.log("throwing projectile");
       const throwingPosX = {
         left: player.worldPos().x - 2,
