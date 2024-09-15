@@ -134,7 +134,7 @@ export function setPlayerMovement(k, player, entityProjectile, map) {
       playAnimIfNotPlaying(player, `player-attack-${player.direction}`);
 
       entityProjectile = map.add(
-        generateProjectileComponents(k, player.worldPos(), player.direction)
+        generateProjectileComponents(k, player.pos, player.direction)
       );
       startProjectile(k, entityProjectile);
       player.lastProjectileTimestamp = k.time();

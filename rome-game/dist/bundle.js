@@ -1,5 +1,3 @@
-
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 (function () {
 	'use strict';
 
@@ -320,17 +318,17 @@ vec4 frag(vec2 pos, vec2 uv, vec4 color, sampler2D tex) {
 	function generateProjectileComponents(k, pos, direction) {
 	    console.log("generating projectile");
 	    const projectileHitBoxPosX = {
-	        left: pos.x - 2,
-	        right: pos.x + 20,
-	        up: pos.x + 5,
-	        down: pos.x + 2,
+	        left: pos.x,
+	        right: pos.x,
+	        up: pos.x,
+	        down: pos.x + 16,
 	    };
 
 	    const projectileHitBoxPosY = {
-	        left: pos.y + 10,
-	        right: pos.y + 5,
+	        left: pos.y,
+	        right: pos.y,
 	        up: pos.y,
-	        down: pos.y + 10,
+	        down: pos.y + 12,
 	    };
 
 	    return [
@@ -362,21 +360,21 @@ vec4 frag(vec2 pos, vec2 uv, vec4 color, sampler2D tex) {
 	        switch (projectile.state) {
 	        case "right":
 	            console.log("projectile right", projectile);
-	            projectile.angle = 90;
 	            projectile.move(projectile.speed, 0);
 	            break;
 	        case "left":
 	            console.log("projectile left", projectile);
-	            projectile.angle = 270;
+	            projectile.flipX = true;
 	            projectile.move(-projectile.speed, 0);
 	            break;
 	        case "up":
 	            console.log("projectile up", projectile);
+	            projectile.angle = 270;
 	            projectile.move(0, -projectile.speed);
 	            break;
 	        case "down":
 	            console.log("projectile down", projectile);
-	            projectile.flipY = true;
+	            projectile.angle = 90;
 	            projectile.move(0, projectile.speed);
 	            break;
 	        }
@@ -529,7 +527,7 @@ vec4 frag(vec2 pos, vec2 uv, vec4 color, sampler2D tex) {
 	      playAnimIfNotPlaying(player, `player-attack-${player.direction}`);
 
 	      entityProjectile = map.add(
-	        generateProjectileComponents(k, player.worldPos(), player.direction)
+	        generateProjectileComponents(k, player.pos, player.direction)
 	      );
 	      startProjectile(k, entityProjectile);
 	      player.lastProjectileTimestamp = k.time();
