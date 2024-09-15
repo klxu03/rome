@@ -1,4 +1,5 @@
-import kaboom from "../lib/kaboom.mjs";
+// import kaboom from "../lib/kaboom.mjs";
+import kaboom from 'kaboom';
 
 const k = kaboom({
     width: 1280,

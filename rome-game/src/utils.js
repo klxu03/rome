@@ -26,9 +26,13 @@ export function colorizeBackground(k, r, g, b) {
   k.add([k.rect(k.canvas.width, k.canvas.height), k.color(r, g, b), k.fixed()]);
 }
 
-export async function fetchMapData(mapPath) {
-  return await (await fetch(mapPath)).json();
-}
+export async function fetchMapData(mapName) {
+    const response = await fetch(mapName);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  }
 
 export function drawTiles(k, map, layer, tileHeight, tileWidth) {
     for (let y = 0; y < layer.height; y++) {

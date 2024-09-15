@@ -15,7 +15,7 @@ import { healthBar } from "../uiComponents/healthBar.js";
 
 export default async function dungeon(k, entities) {
   colorizeBackground(k, 27, 29, 52);
-  const mapData = await fetchMapData("./assets/maps/dungeon.json");
+  const mapData = await fetchMapData("./maps/dungeon.json");
 
   const map = k.add([k.pos(420, 111)]);
 
@@ -55,7 +55,8 @@ export default async function dungeon(k, entities) {
     drawTiles(k, map, layer, mapData.tileheight, mapData.tilewidth);
   }
 
-  setPlayerMovement(k, entities.player);
+  setPlayerMovement(k, entities.player, entities.projectile, map);
+  
   entities.player.onCollide("door-exit", () => {
     gameState.setPreviousScene("dungeon");
     k.go("world");
